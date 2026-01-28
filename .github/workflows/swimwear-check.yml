@@ -26,4 +26,4 @@ jobs:
 
       - name: Run Playwright test
         run: |
-          pytest --maxfail=1 --disable-warnings -q
+          pytest -v -s --maxfail=1 --disable-warnings -q
