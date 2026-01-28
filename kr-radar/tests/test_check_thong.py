@@ -6,7 +6,7 @@ PRODUCT_URL = "https://korneliarataj.com/en/product/thong-dol-stroju-kapielowego
 @pytest.mark.asyncio
 async def test_xl_and_xxl_are_disabled():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
+        browser = await p.chromium.launch()
         page = await browser.new_page()
 
         await page.goto(PRODUCT_URL, timeout=30000)
