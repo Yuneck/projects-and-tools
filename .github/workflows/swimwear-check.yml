@@ -1,0 +1,52 @@
+name: Swimwear Size Monitor
+
+on:
+  schedule:
+    # Every hour between 06:00 and 22:00 Polish time (CET/CEST)
+    - cron: "0 5-21 * * *"   # GitHub uses UTC → Poland = UTC+1/UTC+2
+  workflow_dispatch:
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-asyncio playwright
+          playwright install chromium
+
+      - name: Run Playwright test
+        id: test
+        run: |
+          pytest --maxfail=1 --disable-warnings -q
+        continue-on-error: true   # allow workflow to continue so we can send email
+
+      - name: Send email if test failed
+        if: steps.test.outcome == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.ALERT_EMAIL_USERNAME }}
+          password: ${{ secrets.ALERT_EMAIL_PASSWORD }}
+          subject: "❗ Swimwear Alert: XL/XXL size test FAILED"
+          to: ${{ secrets.ALERT_EMAIL_TO }}
+          from: "KR Radar Bot <${{ secrets.ALERT_EMAIL_USERNAME }}>"
+          body: |
+            The Playwright test for XL/XXL availability has FAILED.
+
+            Repository: ${{ github.repository }}
+            Workflow: ${{ github.workflow }}
+            Run: ${{ github.run_id }}
+
+            Please investigate the product page:
+            https://korneliarataj.com/en/product/thong-dol-stroju-kapielowego-aqua-2025/
