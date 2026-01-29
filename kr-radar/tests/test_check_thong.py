@@ -9,7 +9,7 @@ def test_xl_and_xxl_are_disabled():
         browser = p.chromium.launch()
         page = browser.new_page()
 
-        page.goto(PRODUCT_URL, timeout=30000)
+        page.goto(PRODUCT_URL, timeout=60000)
 
         xl = page.locator("li[data-value='xl']")
         xxl = page.locator("li[data-value='xxl']")
