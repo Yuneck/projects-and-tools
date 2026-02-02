@@ -2,9 +2,9 @@ name: Swimwear Size Monitor
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '15 5-21 * * *'   # GitHub uses UTC → Poland = UTC+1/UTC+2
-    - cron: '30 5-21 * * *'   # GitHub uses UTC → Poland = UTC+1/UTC+2
+  #schedule:
+    #- cron: '15 5-21 * * *'   # GitHub uses UTC → Poland = UTC+1/UTC+2
+    #- cron: '30 5-21 * * *'   # GitHub uses UTC → Poland = UTC+1/UTC+2
 
 jobs:
   run-test:
